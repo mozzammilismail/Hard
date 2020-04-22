@@ -1,0 +1,22 @@
+package com.myspace.ng_oft;
+
+
+/*rule "Common_Validation_RenamedAPI_CR011"
+	when
+		f2 : RLCustomer(age >= 18);
+	then
+		f2.setMessage( "Customer is eligible to get VAS" );
+end*/
+
+rule "Common_Validation_RenamedAPI_CR015"
+no-loop true
+	when
+	    $v0_RLCustomer : RLCustomer();
+		$v1_RLSvcInst: RLSvcInst();
+		RLCustomer(age >= 30);
+	    RLSvcInst(wants.customerID == $v0_RLCustomer.getCustomerId());
+		BPMSvcPdtWantsDO((productFamily == "IDD_SERVICE" && actionCode == "CEASE"));
+	then
+	    //System.out.println("trail test");
+		$v0_RLCustomer.setMessage( "Customer is not eligible" );
+end

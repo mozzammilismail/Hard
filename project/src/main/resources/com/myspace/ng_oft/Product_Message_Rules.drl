@@ -1,0 +1,18 @@
+package com.myspace.ng_oft;
+
+function String hello(String msg) {
+    return "Fired Common_Validation_RenamedAPI_CR012: "+msg+"!";
+}
+
+rule "Common_Validation_RenamedAPI_CR012"
+no-loop true
+	when
+	    $v0_RLCustomer : RLCustomer();
+		$v1_RLSvcInst: RLSvcInst();
+		RLCustomer(age >= 18 && age <= 20);
+	    RLSvcInst(wants.customerID == $v0_RLCustomer.getCustomerId());
+		BPMSvcPdtWantsDO((productFamily == "IDD_SERVICE" && actionCode == "PROVIDE"));
+	then
+	    //System.out.println("trail test");
+		$v0_RLCustomer.setMessage(hello( "FT Follow-up Message: customer request to provide/cease  LiveCAM VAS. Mobile – %%. Please deactivate LiveCam at IVDRS server via URL" ));
+end
